@@ -1,6 +1,6 @@
 # 파일 경로 설정 #
 # 아래에도 파일 경로를 적절하게 변경해야 정상적으로 실행이 가능합니다. #
-filePath = ""
+filePath = "./data/"
 
 # 단순선형회귀 함수 #
 simpleLinear = function(fileName, xName) {
