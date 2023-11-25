@@ -1,6 +1,6 @@
 # 파일 경로 설정 #
 # 아래에도 파일 경로를 적절하게 변경해야 정상적으로 실행이 가능합니다. #
-filePath = "./data/"
+filePath = ""
 
 # 단순선형회귀 함수 #
 simpleLinear = function(fileName, xName) {
@@ -66,7 +66,12 @@ fn = function(b0, b1, sigma) {
 }
 res = mle2(fn, start = list(b0 = 68, b1 = 0, sigma = 1), data = data)
 summary(res)
-hist(resid(res))
+
+predicted <- coef(res)["sigma"] + coef(res)["b0"] * x
+# 잔차 계산
+residuals <- y - predicted
+# 잔차 히스토그램 그리기
+hist(residuals)
 
 ### 다중 공산성 탐지 ### (GNI, CO2)
 temp = paste0(filePath, "GNI+CO2.csv")
@@ -77,7 +82,7 @@ cor(GC)
 library(HH)
 vif(GC[,c(1,2)])
 
-### 이분산 GLS ### (AIDS)
+### 이분산 GLS ### (AIDS)S
 temp = paste0(filePath, "AIDS2.csv")
 AIDS2 = read.csv(file = temp, header = T)
 AIDS2.res = lm(기대수명~AIDS,data = AIDS2)
@@ -117,12 +122,14 @@ dis.gls.res = gls(model = 기대수명~재난피해자, data = dis.df, weights =
 dis.gls.res
 
 ### 다중회귀 ### (GNI, 인터넷, CO2)
-multiple3 = read.csv(file = "multiple3.csv", header = T)
+temp = paste0(filePath, "multiple3.csv")
+multiple3 = read.csv(file = temp, header = T)
 ls3.res = lm(formula = 기대수명~GNI+인터넷+CO2,data = multiple3)
 summary(ls3.res)
 BIC(ls3.res)
 ### 다중회귀 ### (GNI, 인터넷)
-multiple2 = read.csv(file = "multiple3.csv", header = T)
+temp = paste0(filePath, "multiple3.csv")
+multiple2 = read.csv(file = temp, header = T)
 ls2.res = lm(formula = 기대수명~GNI+인터넷,data = multiple3)
 summary(ls2.res)
 BIC(ls2.res)
@@ -141,20 +148,23 @@ res3 = mle2(fn3 ,start = list(b0 = 60, b1 = 0, b2 = 0, b3 = 0, sigma = 1))
 summary(res3)
 
 ### 다중회귀 ### (GNI, 인터넷, CO2, 흡연율)
-multiple4 = read.csv(file = "multiple3.csv", header = T)
+temp = paste0(filePath, "multiple4.csv")
+multiple4 = read.csv(file = temp, header = T)
 ls4.res = lm(formula = 기대수명~GNI+인터넷+CO2+흡연율,data = multiple4)
 summary(ls4.res)
 BIC(ls4.res)
 
 ### 다중회귀 ### (GNI, 인터넷, 흡연율)
-#multiple4 = read.csv(file = "multiple3.csv", header = T)
+temp = paste0(filePath, "multiple4.csv")
+multiple4 = read.csv(file = temp, header = T)
 ls41.res = lm(formula = 기대수명~GNI+인터넷+흡연율,data = multiple4)
 summary(ls41.res)
 BIC(ls41.res)
 
 ### 다중회귀 최우추정 ### (GNI, 인터넷, CO2,흡연율)
 library(bbmle)
-multiple4 = read.csv(file = "multiple4.csv", header = T)
+temp = paste0(filePath, "multiple4.csv")
+multiple4 = read.csv(file = temp, header = T)
 y = multiple4$기대수명
 x1 = multiple4$GNI
 x2 = multiple4$인터넷
@@ -169,7 +179,8 @@ summary(res4)
 
 ### 다중회귀 최우추정 ### (GNI, 인터넷, 흡연율)
 library(bbmle)
-multiple4 = read.csv(file = "multiple4.csv", header = T)
+temp = paste0(filePath, "multiple4.csv")
+multiple4 = read.csv(file = temp, header = T)
 y = multiple4$기대수명
 x1 = multiple4$GNI
 x2 = multiple4$인터넷
@@ -182,15 +193,17 @@ res41 = mle2(fn41 ,start = list(b0 = 60, b1 = 0, b2 = 0, b3 = 0, sigma = 1))
 summary(res41)
 
 
-"""폐기"""
+# """폐기"""
 ### 다중회귀 ### (GNI, 인터넷, 흡연율, AIDS)
-multiple_A = read.csv(file = "multiple_A.csv", header = T)
+temp = paste0(filePath, "multiple_A.csv")
+multiple_A = read.csv(file = temp, header = T)
 lsA.res = lm(formula = 기대수명~GNI+인터넷+흡연율+AIDS,data = multiple_A)
 summary(lsA.res)
 BIC(lsA.res)
 
 ### 다중회귀 ### (GNI, 인터넷, 흡연율, 보건지출비)
-multiple5 = read.csv(file = "multiple5.csv", header = T)
+temp = paste0(filePath, "multiple5.csv")
+multiple5 = read.csv(file = temp, header = T)
 ls5.res = lm(formula = 기대수명~GNI+인터넷+흡연율+보건지출비,data = multiple5)
 summary(ls5.res)
 BIC(ls5.res)
